@@ -1,0 +1,24 @@
+{
+  "name": "safecircle",
+  "version": "1.0.0",
+  "description": "SafeCircle - Women Safety and Emergency Coordination Platform",
+  "homepage": "https://github.com/harshadajagdale899-coder/SafeCircle#readme",
+  "bugs": {
+    "url": "https://github.com/harshadajagdale899-coder/SafeCircle/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harshadajagdale899-coder/SafeCircle.git"
+  },
+  "license": "ISC",
+  "author": "Harshada Jagdale",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
