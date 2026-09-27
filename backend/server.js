@@ -8,6 +8,8 @@ const User = require('./models/User');
 const jwt = require('jsonwebtoken');
 const middleware = require('./middleware/auth');
 const TrustedContact = require('./models/TrustedContact');
+const SOS = require('./models/SOS');
+const notificationService = require('./services/notificationsService');
 
 dotenv.config({ path: './.env' });
 
@@ -247,6 +249,140 @@ app.delete(
       res.status(200).json({
         status: 'success',
         message: 'deleted SucessfullY',
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: 'fail',
+        message: err.message,
+      });
+    }
+  },
+);
+// <----------------------------SOS routes --------------------------------------->
+
+app.post('/api/sos', middleware.protectedRoutes, async (req, res) => {
+  try {
+    const sos = await SOS.create({
+      userId: req._id,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+      status: 'Started',
+    });
+    res.status(201).json({
+      status: 'success',
+      data: sos,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+});
+
+//Get SOS history
+
+app.get('/api/sos', middleware.protectedRoutes, async (req, res) => {
+  try {
+    const sos = await SOS.find({ userId: req._id });
+    res.status(200).json({
+      status: 'success',
+      data: sos,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+});
+
+//get a specific SOS history
+
+app.get('/api/sos/:id', middleware.protectedRoutes, async (req, res) => {
+  try {
+    const sos = await SOS.findOne({
+      userId: req._id,
+      _id: req.params.id,
+    });
+    res.status(200).json({
+      status: 'success',
+      data: sos,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+});
+
+//Upadate the SOS status
+app.patch('/api/sos/:id', middleware.protectedRoutes, async (req, res) => {
+  try {
+    const sos = await SOS.findByIdAndUpdate(
+      {
+        userId: req._id,
+        _id: req.params.id,
+      },
+      {
+        status: 'Completed',
+      },
+      {
+        new: true,
+      },
+    );
+    res.status(200).json({
+      status: 'success',
+      data: sos,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+});
+
+/** SOS TO Trusted Contacts */
+
+app.post(
+  '/api/sos/:id/notify',
+  middleware.protectedRoutes,
+  async (req, res) => {
+    try {
+      const sos = await SOS.findOne({
+        userId: req._id,
+        _id: req.params.id,
+      });
+
+      if (!sos) {
+        return res.status(404).json({
+          status: 'fail',
+          message: 'SOS is  invalid.',
+        });
+      }
+
+      const trustedContact = await TrustedContact.find({ userId: req._id });
+      const user = await User.findOne({ _id: req._id });
+      for (const contact of trustedContact) {
+        const message = notificationService.emergencyMessage(
+          user.name,
+          sos.latitude,
+          sos.longitude,
+          sos.createdAt,
+        );
+
+        await notificationService.sendSms(contact.phoneNo, message);
+      }
+
+      res.status(200).json({
+        status: 'Success',
+        data: {
+          UserId: req._id,
+          sos,
+          trustedContact,
+        },
       });
     } catch (err) {
       res.status(400).json({
