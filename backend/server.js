@@ -1,6 +1,8 @@
 const dns = require('dns');
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 
+const cors = require('cors');
+
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -18,6 +20,11 @@ const app = express();
 const PORT = 5000;
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+  }),
+);
 
 /**---------------------------------------------------------------------------- */
 

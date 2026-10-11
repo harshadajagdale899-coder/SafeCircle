@@ -1,0 +1,22 @@
+#login-form {
+  background-color: white;
+  height: 70vh;
+  width: 80vh;
+  margin-top: 20px;
+}
+
+.form-field {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+#sign-in-message {
+  margin-top: -10px;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+}
