@@ -20,3 +20,30 @@
   line-height: 18px;
   font-weight: 500;
 }
+
+.footer-container {
+  height: 20vh;
+  background-color: #e2dfff;
+  margin-top: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  font-size: 15px;
+}
+
+.footer {
+  width: 30vh;
+  height: 12vh;
+  text-align: center;
+  padding-top: 20px;
+  margin-left: 20vh;
+  border-right: 1px grey solid;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f0069;
+}
+
+.footer-description {
+  margin-left: 20px;
+}

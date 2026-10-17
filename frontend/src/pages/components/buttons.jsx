@@ -10,3 +10,16 @@ export function Button({ text, icon: Icon, type }) {
     </button>
   );
 }
+
+export function SOS() {
+  return (
+    <div className="outer-transition">
+      <div className="outer-round">
+        <button className="inner-round">
+          <h3>SOS</h3>
+          <h4>Click Me!</h4>
+        </button>
+      </div>
+    </div>
+  );
+}

@@ -3,19 +3,21 @@ import "./register.css";
 import "./login.css";
 
 import {
-  Navbar,
+  NavbarUser,
   InputField,
   HeroSection,
   RegisterFormContainer,
 } from "./register";
 import { AtSign, Lock, Shield } from "lucide-react";
-import { Button } from "./buttons";
+import { Button } from "./components/buttons.jsx";
 import { useState } from "react";
 import { loginUser, getCurrentUser } from "../services/authService.js";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   async function handleLoginSubmit(event) {
     event.preventDefault();
@@ -40,6 +42,7 @@ function LoginForm() {
       localStorage.setItem("token", res.token);
       await getCurrentUser(localStorage.getItem("token"));
       alert("Login Successful!!!!");
+      navigate("/dashboard");
     } catch (err) {
       console.log(err.message);
       alert("Login Failed!");
@@ -88,7 +91,7 @@ function LoginForm() {
 export function Login() {
   return (
     <>
-      <Navbar />
+      <NavbarUser />
       <div className="page-components">
         <HeroSection />
         <RegisterFormContainer
@@ -97,6 +100,19 @@ export function Login() {
           form={LoginForm}
         />
       </div>
+      <Footer />;
     </>
+  );
+}
+
+export function Footer() {
+  return (
+    <div className="footer-container">
+      <div className="footer">SafeCircle</div>
+      <div className="footer-description">
+        ©2026 SafeCircle. End-to-end encrypted personal safety network. All
+        rights reserved.
+      </div>
+    </div>
   );
 }

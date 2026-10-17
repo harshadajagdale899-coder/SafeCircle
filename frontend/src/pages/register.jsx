@@ -1,26 +1,28 @@
 import logoImg from "./Images/logo-img.png";
 import tagImg from "./Images/tag-img.png";
 import { User, Info, AtSign, Lock, Shield } from "lucide-react";
-import { Button } from "./buttons.jsx";
+import { Button } from "./components/buttons.jsx";
 import { registerUser } from "../services/authService.js";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./register.css";
 import { useState } from "react";
+import { Footer } from "./login.jsx";
+import { useNavigate } from "react-router-dom";
 
-function WebsiteBrand() {
+export function WebsiteBrand() {
   return (
     <div id="branding-container">
       <img src={logoImg} alt="" />
       <div id="branding" className="naming-container">
         <div id="brand-name">SafeCircle</div>
-        <div id="brand-des">TRUSTED NETWORK</div>
+        <div id="brand-des">YOUR SAFETY, YOUR CIRCLE</div>
       </div>
     </div>
   );
 }
 
-export function Navbar() {
+export function NavbarUser() {
   return (
     <div className="navbar">
       <WebsiteBrand />
@@ -105,6 +107,7 @@ function RegistrationForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [conPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -130,7 +133,7 @@ function RegistrationForm() {
       const res = await registerUser(obj);
       console.log(res);
       alert("New User Registered Sucessfully. Proceed to Login....");
-      window.location.href = "http://localhost:5173/login";
+      navigate("/login");
     } catch (err) {
       console.log(err.message);
       alert("Registration Failed!!");
@@ -237,7 +240,7 @@ export function InputField({
 export function Registration() {
   return (
     <>
-      <Navbar />
+      <NavbarUser />
       <div className="page-components">
         <HeroSection />
         <RegisterFormContainer
@@ -246,6 +249,7 @@ export function Registration() {
           form={RegistrationForm}
         />
       </div>
+      <Footer />
     </>
   );
 }
